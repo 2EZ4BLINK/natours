@@ -16,6 +16,16 @@ exports.checkId = (req, res, next, val) => {
   next();
 };
 
+exports.checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Missing name or price",
+    });
+  }
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   console.log("request time: ", req.requestTime);
 
@@ -30,7 +40,7 @@ exports.getAllTours = (req, res) => {
 };
 
 exports.getTour = (req, res) => {
-  const newTours = tours.find((item) => item.id === id);
+  const newTours = tours.find((item) => item.id === req.params.id * 1);
 
   res.status(200).json({
     status: "success",
